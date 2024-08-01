@@ -104,12 +104,14 @@ function parseLeaderboard(html) {
     playerRows.forEach(row => {
         const playerNameElement = row.querySelector('.plyr .leaderboard_player_name');
         const playerPositionElement = row.querySelector('.pos');
+        const playerToParElement = row.querySelector('.Table__TD:nth-child(4)');
 
         if (playerNameElement && playerPositionElement) {
             const playerName = playerNameElement.innerText.trim();
             let playerPosition = playerPositionElement.innerText.trim();
+            const playerToPar = playerToParElement.innerText.trim();
 
-            if (playerPosition === 'CUT') {
+            if (playerToPar === 'CUT') {
                 playerPosition = 79;
             } else {
                 playerPosition = parseInt(playerPosition.replace('T', ''), 10);
@@ -134,10 +136,13 @@ function readCsv(filePath) {
 }
 
 function calculateScores(responses, leaderboard) {
+    // Create a map of player names to their positions for quick lookup
     const leaderboardMap = leaderboard.reduce((map, player) => {
-        map[player.name] = player.position;
+        map[player.name.toLowerCase().trim()] = player.position;
         return map;
     }, {});
+
+    console.log("Leaderboard Map:", leaderboardMap);
 
     return responses.map(response => {
         const tiers = ['Tier A', 'Tier B', 'Tier C', 'Tier D', 'Tier E', 'Tier F'];
@@ -146,13 +151,17 @@ function calculateScores(responses, leaderboard) {
         tiers.forEach(tier => {
             const players = response[tier] ? response[tier].split(',') : [];
             players.forEach(player => {
-                totalScore += leaderboardMap[player.trim()] || 79;
+                const normalizedPlayerName = player.trim().toLowerCase();
+                const position = leaderboardMap[normalizedPlayerName] || 79;
+                totalScore += position;
+                console.log(`User: ${response.Username}, Player: ${player.trim()}, Position: ${position}, Total Score: ${totalScore}`);
             });
         });
 
         return { username: response.Username, totalScore };
     });
 }
+
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);

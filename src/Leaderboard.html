@@ -1,53 +1,53 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Leaderboard</title>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                fetch('http://localhost:3000/leaderboard')
-                    .then(response => response.json())
-                    .then(data => {
-                        const tableBody = document.getElementById('leaderboard-body');
-                        tableBody.innerHTML = '';
+<head>
+    <title>Leaderboard</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('http://localhost:3000/leaderboard')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('leaderboard-body');
+                    tableBody.innerHTML = '';
 
-                        data.forEach((user, index) => {
-                            const row = document.createElement('tr');
+                    data.forEach((user, index) => {
+                        const row = document.createElement('tr');
 
-                            const rankCell = document.createElement('td');
-                            rankCell.textContent = index + 1;
-                            row.appendChild(rankCell);
+                        const rankCell = document.createElement('td');
+                        rankCell.textContent = index + 1;
+                        row.appendChild(rankCell);
 
-                            const usernameCell = document.createElement('td');
-                            usernameCell.textContent = user.username;
-                            row.appendChild(usernameCell);
+                        const usernameCell = document.createElement('td');
+                        usernameCell.textContent = user.username;
+                        row.appendChild(usernameCell);
 
-                            const scoreCell = document.createElement('td');
-                            scoreCell.textContent = user.totalScore;
-                            row.appendChild(scoreCell);
+                        const scoreCell = document.createElement('td');
+                        scoreCell.textContent = user.totalScore;
+                        row.appendChild(scoreCell);
 
-                            tableBody.appendChild(row);
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error fetching leaderboard:', error);
+                        tableBody.appendChild(row);
                     });
-            });
-        </script>
-    </head>
-    <body>
-        <h1>Competition Leaderboard</h1>
-        <p>Click <a href="Selector.html" target="_blank">here</a> to go to the team selection page.</p>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Username</th>
-                    <th>Total Score</th>
-                </tr>
-            </thead>
-            <tbody id="leaderboard-body">
-                <!-- Leaderboard data will be inserted here -->
-            </tbody>
-        </table>
-    </body>
+                })
+                .catch(error => {
+                    console.error('Error fetching leaderboard:', error);
+                });
+        });
+    </script>
+</head>
+<body>
+    <h1>Competition Leaderboard</h1>
+    <p>Click <a href="Selector.html" target="_blank">here</a> to go to the team selection page.</p>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Username</th>
+                <th>Total Score</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+            <!-- Leaderboard data will be inserted here -->
+        </tbody>
+    </table>
+</body>
 </html>
