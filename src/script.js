@@ -18,25 +18,30 @@ document.addEventListener("DOMContentLoaded", function() {
             tbody.innerHTML = '';
 
             if (playerRows.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="2">No players found.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3">No players found.</td></tr>';
                 return;
             }
 
             playerRows.forEach(row => {
+                const playerPositionElement = row.querySelector('.Table__TD:nth-child(2)'); // Adjust the selector if needed
                 const playerNameElement = row.querySelector('.plyr .leaderboard_player_name');
                 const playerToParElement = row.querySelector('.Table__TD:nth-child(4)');
 
-                if (playerNameElement && playerToParElement) {
+                if (playerPositionElement && playerNameElement && playerToParElement) {
+                    const playerPosition = playerPositionElement.innerText.trim();
                     const playerName = playerNameElement.innerText.trim();
                     const playerToPar = playerToParElement.innerText.trim();
 
                     const tr = document.createElement('tr');
+                    const positionTd = document.createElement('td');
                     const nameTd = document.createElement('td');
                     const scoreTd = document.createElement('td');
 
+                    positionTd.textContent = playerPosition;
                     nameTd.textContent = playerName;
                     scoreTd.textContent = playerToPar;
 
+                    tr.appendChild(positionTd);
                     tr.appendChild(nameTd);
                     tr.appendChild(scoreTd);
                     tbody.appendChild(tr);
@@ -46,6 +51,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => {
             console.error('Error fetching data:', error);
             const tbody = document.querySelector('#leaderboard tbody');
-            tbody.innerHTML = `<tr><td colspan="2">Failed to load content: ${error.message}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="3">Failed to load content: ${error.message}</td></tr>`;
         });
 });
