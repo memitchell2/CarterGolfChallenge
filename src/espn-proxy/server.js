@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const csv = require('csv-parser');
+const { JSDOM } = require('jsdom');
 
 const app = express();
 const port = 3000;
@@ -19,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Route to fetch ESPN data
 app.get('/fetch-espn', async (req, res) => {
     try {
-        const response = await fetch('https://www.espn.com/golf/leaderboard/_/tournamentId/401580344');
+        const response = await fetch('https://www.espn.com/golf/leaderboard/_/tournamentId/401580351');
         const text = await response.text();
 
         // Write the fetched HTML content to a file for inspection
@@ -94,7 +95,6 @@ app.get('/leaderboard', async (req, res) => {
 });
 
 function parseLeaderboard(html) {
-    const { JSDOM } = require('jsdom');
     const dom = new JSDOM(html);
     const document = dom.window.document;
 
@@ -140,16 +140,15 @@ function calculateScores(responses, leaderboard) {
     }, {});
 
     return responses.map(response => {
-        const totalScore = [
-            ...response['Tier A'].split(','),
-            ...response['Tier B'].split(','),
-            ...response['Tier C'].split(','),
-            ...response['Tier D'].split(','),
-            ...response['Tier E'].split(','),
-            ...response['Tier F'].split(',')
-        ].reduce((score, player) => {
-            return score + (leaderboardMap[player] || 0);
-        }, 0);
+        const tiers = ['Tier A', 'Tier B', 'Tier C', 'Tier D', 'Tier E', 'Tier F'];
+        let totalScore = 0;
+
+        tiers.forEach(tier => {
+            const players = response[tier] ? response[tier].split(',') : [];
+            players.forEach(player => {
+                totalScore += leaderboardMap[player.trim()] || 79;
+            });
+        });
 
         return { username: response.Username, totalScore };
     });
