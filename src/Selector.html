@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Players</title>
+    <link rel="stylesheet" href="SelectorStyles.css">
+</head>
+<body>
+    <h1>Select 3 Players from Each Tier</h1>
+    <p>Please select exactly 3 players from each tier.</p>
+    <form id="playerForm" action="http://localhost:3000/submit" method="POST">
+        <div class="username">
+            <h2>Username</h2>
+            <input type="text" name="username" required>
+        </div>
+        <div class="tier" id="tierA">
+            <h2>Tier A</h2>
+            <select name="tierA" multiple>
+                <!-- Options will be populated here -->
+            </select>
+        </div>
+        <div class="tier" id="tierB">
+            <h2>Tier B</h2>
+            <select name="tierB" multiple>
+                <!-- Options will be populated here -->
+            </select>
+        </div>
+        <div class="tier" id="tierC">
+            <h2>Tier C</h2>
+            <select name="tierC" multiple>
+                <!-- Options will be populated here -->
+            </select>
+        </div>
+        <div class="tier" id="tierD">
+            <h2>Tier D</h2>
+            <select name="tierD" multiple>
+                <!-- Options will be populated here -->
+            </select>
+        </div>
+        <div class="tier" id="tierE">
+            <h2>Tier E</h2>
+            <select name="tierE" multiple>
+                <!-- Options will be populated here -->
+            </select>
+        </div>
+        <div class="tier" id="tierF">
+            <h2>Tier F</h2>
+            <select name="tierF" multiple>
+                <!-- Options will be populated here -->
+            </select>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="output"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="SelectorScript.js"></script>
+</body>
+</html>
